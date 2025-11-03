@@ -2,6 +2,33 @@
 
 MedExtract is a clinical datapoint extraction system that uses Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG) to extract specific information from medical reports.
 
+## 🌟 New: Web Dashboard
+
+MedExtract now includes a **user-friendly web dashboard** that makes AI-powered medical data extraction accessible to everyone—no coding required!
+
+### Quick Start with Dashboard
+
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Install Ollama and download a model:
+   ```bash
+   ollama pull llama3
+   ```
+
+3. Start the dashboard:
+   ```bash
+   python app.py
+   ```
+
+4. Open your browser to `http://localhost:5000`
+
+5. Upload your CSV file, configure settings, and extract data!
+
+📖 **For complete instructions, see [DASHBOARD_TUTORIAL.md](DASHBOARD_TUTORIAL.md)**
+
 ## Features
 
 - Supports multiple LLM models (llama3, mistral)

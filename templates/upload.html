@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Upload - MedExtract Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-cloud-upload"></i> Upload Medical Reports
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>File Requirements:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>Format: CSV file (.csv)</li>
+                        <li>Must contain a column with medical report text (e.g., "Report Text")</li>
+                        <li>Optionally include ground truth labels for evaluation</li>
+                        <li>Maximum file size: 16 MB</li>
+                    </ul>
+                </div>
+                
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="file" class="form-label">
+                            <strong>Select CSV File:</strong>
+                        </label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".csv" required>
+                        <div class="form-text">
+                            Upload a CSV file containing medical reports for extraction
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-upload"></i> Upload File
+                        </button>
+                    </div>
+                </form>
+                
+                <hr class="my-4">
+                
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="bi bi-file-earmark-spreadsheet"></i> Expected CSV Format
+                        </h6>
+                        <p class="small text-muted mb-2">Your CSV should have columns similar to:</p>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Report_ID</th>
+                                        <th>Report Text</th>
+                                        <th>BTFU Score (Updated)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>001</td>
+                                        <td>Patient shows mild symptoms...</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>002</td>
+                                        <td>Severe condition requiring...</td>
+                                        <td>3</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="small text-muted mb-0">
+                            <strong>Note:</strong> The ground truth column (e.g., "BTFU Score (Updated)") is optional but recommended for accuracy evaluation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

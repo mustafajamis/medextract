@@ -18,6 +18,8 @@ data/output/results/*
 !data/output/results/.gitkeep
 data/output/figures/*
 !data/output/figures/.gitkeep
+data/output/predictions.csv
+config/temp_config_*.yaml
 
 # Logs
 *.log

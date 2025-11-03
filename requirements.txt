@@ -12,3 +12,5 @@ ollama>=0.1.0
 interruptingcow==0.8
 transformers>=4.38.0
 torch>=2.2.0
+flask>=2.3.0
+werkzeug>=2.3.0

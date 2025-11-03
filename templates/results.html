@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Results - MedExtract Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-graph-up"></i> Extraction Results
+            </div>
+            <div class="card-body">
+                {% if results.error %}
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i> {{ results.error }}
+                </div>
+                {% else %}
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h2 class="display-4">{{ results.total_reports }}</h2>
+                                <p class="mb-0">Total Reports Processed</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% if results.metrics %}
+                    <div class="col-md-6">
+                        <div class="card bg-success text-white">
+                            <div class="card-body text-center">
+                                <h2 class="display-4">{{ "%.1f"|format(results.metrics.Accuracy * 100) }}%</h2>
+                                <p class="mb-0">Extraction Accuracy</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% if results.metrics %}
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <i class="bi bi-speedometer2"></i> Performance Metrics
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <div class="text-center">
+                                    <h5>Macro Precision</h5>
+                                    <p class="lead">{{ "%.3f"|format(results.metrics['Macro Precision']) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="text-center">
+                                    <h5>Macro Recall</h5>
+                                    <p class="lead">{{ "%.3f"|format(results.metrics['Macro Recall']) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="text-center">
+                                    <h5>Macro F1</h5>
+                                    <p class="lead">{{ "%.3f"|format(results.metrics['Macro F1']) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="text-center">
+                                    <h5>Reports Evaluated</h5>
+                                    <p class="lead">{{ results.metrics['Reports Evaluated']|int }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if results.figures %}
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <i class="bi bi-bar-chart"></i> Visualizations
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for figure in results.figures %}
+                            <div class="col-md-6 mb-3">
+                                <img src="{{ url_for('figure', filename=figure) }}" 
+                                     class="img-fluid rounded border" 
+                                     alt="Confusion Matrix">
+                                <p class="text-center text-muted small mt-2">{{ figure }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <i class="bi bi-table"></i> Data Preview
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            {{ results.preview|safe }}
+                        </div>
+                        <p class="text-muted small mb-0 mt-2">
+                            Showing first 10 rows. Download the full results below.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('download', job_id=job_id) }}" class="btn btn-success btn-lg">
+                        <i class="bi bi-download"></i> Download Complete Results (CSV)
+                    </a>
+                    <a href="{{ url_for('upload') }}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Process Another File
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
