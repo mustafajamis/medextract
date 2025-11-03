@@ -581,13 +581,25 @@ def append_metrics_to_log(metrics_dict, column_name, log_file_path, eval_id):
     else:
         log_df.to_csv(log_file_path, index=False)
 
-def main():
-    parser = argparse.ArgumentParser(description='MedExtract: Clinical Datapoint Extraction System')
-    parser.add_argument('--config', type=str, default='config/config.yaml', help='Path to the configuration file')
-    args = parser.parse_args()
+def main(config_path=None):
+    """
+    Main processing function.
     
+    Args:
+        config_path: Optional path to config file. If None, will parse from command-line args.
+                     If provided, uses the given config path directly (for programmatic use).
+    """
     global config
-    config = load_config(args.config)
+    
+    if config_path is None:
+        # Command-line mode: parse arguments
+        parser = argparse.ArgumentParser(description='MedExtract: Clinical Datapoint Extraction System')
+        parser.add_argument('--config', type=str, default='config/config.yaml', help='Path to the configuration file')
+        args = parser.parse_args()
+        config = load_config(args.config)
+    else:
+        # Programmatic mode: use provided config path
+        config = load_config(config_path)
 
     # Basic library check (silent on optional/version mismatches)
     check_library_versions()

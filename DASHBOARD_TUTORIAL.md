@@ -534,7 +534,49 @@ ollama pull llama3
 ollama serve  # Start Ollama server
 ```
 
-#### 2. Out of Memory Error
+#### 2. RAG Shows as Disabled in Results (Even When Enabled)
+
+**Problem:** Results file shows `rag_enabled_(False)` in column name even though RAG was enabled on dashboard
+
+**Solution:** ✅ **FIXED in latest version!** This was a bug where the configuration wasn't being passed correctly from the dashboard to the backend. The fix ensures that:
+- When you check "Enable RAG" on the configuration page, it's now properly passed to the processing engine
+- The column names in your results will correctly show `rag_enabled_(True)` when RAG is enabled
+- Your results should now have far fewer "NR" (Not Reported) values when RAG is working
+
+**What was wrong:** The backend was using command-line argument parsing which ignored the dashboard configuration. Now it accepts the config directly from the dashboard.
+
+#### 3. Uploaded CSV Not Being Used
+
+**Problem:** System only works when manually placing CSV in `data/input/input_reports.csv`
+
+**Solution:** ✅ **Already working correctly!** The uploaded file is automatically used. Here's what happens:
+1. When you upload a file, it's saved to `data/input/` with a unique filename
+2. The dashboard configuration automatically points to your uploaded file
+3. The processing uses your uploaded file directly
+4. Results are saved to `data/output/predictions.csv`
+
+**If you're still having issues:**
+- Make sure you complete the full workflow: Upload → Configure → Process
+- Don't manually edit files in `data/input/` - let the dashboard handle it
+- Check that your CSV has a "Report Text" column
+
+#### 4. Results Show All "NR" (Not Reported)
+
+**Problem:** All extractions return "NR" instead of actual values
+
+**Cause:** This happens when:
+- RAG is disabled (see issue #2 above - now fixed!)
+- The AI can't access the medical reports
+- The report text column is empty or misnamed
+
+**Solutions:**
+- ✅ Use the latest version with RAG fix
+- Enable RAG in configuration (checkbox should be checked)
+- Verify your CSV has actual text in the "Report Text" column
+- Check Ollama is running: `ollama list`
+- Try a smaller test batch first (10 reports)
+
+#### 5. Out of Memory Error
 
 **Problem:** Not enough RAM
 
@@ -545,7 +587,7 @@ ollama serve  # Start Ollama server
 - Close other applications
 - Use rule-based extraction
 
-#### 3. Processing Takes Too Long
+#### 6. Processing Takes Too Long
 
 **Problem:** Slow extraction
 
@@ -556,12 +598,12 @@ ollama serve  # Start Ollama server
 - Increase timeout
 - Use rule-based extraction for speed
 
-#### 4. Low Accuracy
+#### 7. Low Accuracy
 
 **Problem:** Poor extraction quality
 
 **Solutions:**
-- Enable RAG
+- Enable RAG (now working correctly!)
 - Enable reranker
 - Use ensemble retriever
 - Enable few-shot learning
@@ -569,7 +611,7 @@ ollama serve  # Start Ollama server
 - Add custom examples
 - Verify CSV format
 
-#### 5. File Upload Fails
+#### 8. File Upload Fails
 
 **Problem:** CSV not accepted
 
@@ -580,7 +622,7 @@ ollama serve  # Start Ollama server
 - Check for special characters
 - Validate column names
 
-#### 6. Dashboard Won't Start
+#### 9. Dashboard Won't Start
 
 **Problem:** Flask app error
 

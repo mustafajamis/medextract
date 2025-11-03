@@ -42,29 +42,43 @@
                         <i class="bi bi-speedometer2"></i> Performance Metrics
                     </div>
                     <div class="card-body">
+                        <div class="alert alert-info mb-3">
+                            <h5><i class="bi bi-info-circle"></i> What These Metrics Mean</h5>
+                            <ul class="mb-0">
+                                <li><strong>Accuracy:</strong> Overall percentage of correct predictions across all reports</li>
+                                <li><strong>Macro Precision:</strong> Average precision across all classes (how often predictions are correct)</li>
+                                <li><strong>Macro Recall:</strong> Average recall across all classes (how many actual values were found)</li>
+                                <li><strong>Macro F1:</strong> Balanced measure combining precision and recall (1.0 is perfect)</li>
+                                <li><strong>Reports Evaluated:</strong> Number of reports with ground truth labels used for evaluation</li>
+                            </ul>
+                        </div>
                         <div class="row">
                             <div class="col-md-3 mb-3">
                                 <div class="text-center">
                                     <h5>Macro Precision</h5>
                                     <p class="lead">{{ "%.3f"|format(results.metrics['Macro Precision']) }}</p>
+                                    <small class="text-muted">Of predictions made, how many were correct</small>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <div class="text-center">
                                     <h5>Macro Recall</h5>
                                     <p class="lead">{{ "%.3f"|format(results.metrics['Macro Recall']) }}</p>
+                                    <small class="text-muted">Of actual values, how many were found</small>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <div class="text-center">
                                     <h5>Macro F1</h5>
                                     <p class="lead">{{ "%.3f"|format(results.metrics['Macro F1']) }}</p>
+                                    <small class="text-muted">Balanced measure (0-1 scale)</small>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <div class="text-center">
                                     <h5>Reports Evaluated</h5>
                                     <p class="lead">{{ results.metrics['Reports Evaluated']|int }}</p>
+                                    <small class="text-muted">Reports with ground truth</small>
                                 </div>
                             </div>
                         </div>
@@ -75,16 +89,32 @@
                 {% if results.figures %}
                 <div class="card mb-4">
                     <div class="card-header bg-secondary text-white">
-                        <i class="bi bi-bar-chart"></i> Visualizations
+                        <i class="bi bi-bar-chart"></i> Confusion Matrix Visualization
                     </div>
                     <div class="card-body">
+                        <div class="alert alert-info">
+                            <h5><i class="bi bi-info-circle"></i> Understanding the Confusion Matrix</h5>
+                            <p class="mb-2">The confusion matrix shows how well the AI extracted the data:</p>
+                            <ul class="mb-0">
+                                <li><strong>Rows</strong> represent the actual (ground truth) values</li>
+                                <li><strong>Columns</strong> represent the AI's predicted values</li>
+                                <li><strong>Diagonal values</strong> (top-left to bottom-right) are correct predictions</li>
+                                <li><strong>Off-diagonal values</strong> are errors (the AI predicted incorrectly)</li>
+                                <li><strong>Darker colors</strong> indicate higher frequency of predictions</li>
+                            </ul>
+                            <p class="mt-2 mb-0"><strong>Goal:</strong> You want most numbers concentrated on the diagonal (darker squares), indicating high accuracy.</p>
+                        </div>
                         <div class="row">
                             {% for figure in results.figures %}
                             <div class="col-md-6 mb-3">
-                                <img src="{{ url_for('figure', filename=figure) }}" 
-                                     class="img-fluid rounded border" 
-                                     alt="Confusion Matrix">
-                                <p class="text-center text-muted small mt-2">{{ figure }}</p>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <img src="{{ url_for('figure', filename=figure) }}" 
+                                             class="img-fluid rounded border" 
+                                             alt="Confusion Matrix">
+                                        <p class="text-center text-muted small mt-2">{{ figure }}</p>
+                                    </div>
+                                </div>
                             </div>
                             {% endfor %}
                         </div>

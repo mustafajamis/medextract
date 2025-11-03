@@ -94,11 +94,17 @@
                             <i class="bi bi-search"></i> RAG (Retrieval-Augmented Generation) Settings
                         </div>
                         <div class="card-body">
+                            <div class="alert alert-info mb-3">
+                                <h6><i class="bi bi-lightbulb"></i> What is RAG?</h6>
+                                <p class="mb-0">RAG improves extraction accuracy by breaking long reports into smaller chunks, 
+                                finding the most relevant sections, and focusing the AI on those parts. 
+                                <strong>Enable this for better results</strong>, especially with long or complex medical reports.</p>
+                            </div>
                             <div class="form-check mb-3">
                                 <input type="checkbox" class="form-check-input" id="rag_enabled" name="rag_enabled" 
                                        {% if config.rag.enabled %}checked{% endif %}>
                                 <label class="form-check-label" for="rag_enabled">
-                                    <strong>Enable RAG</strong> (improves accuracy by retrieving relevant text chunks)
+                                    <strong>Enable RAG</strong> (Recommended for accuracy)
                                 </label>
                             </div>
                             
