@@ -1,51 +1,52 @@
-Report_ID,Report Text,Symptom Severity,Symptom Severity_model_(llama3:latest)_rag_enabled_(True)_embeddings_(all-MiniLM-L6-v2)_retriever_(vectorstore)_reranker_(True)_simple_prompting_(True)_fewshots_method_(True)_fewshots_with_NR_method_(False)_fewshots_with_NR_extended_(False)_json_(True)_temp_(0.1)_top_k_(40)_top_p_(0.9)
-1,Patient presents with mild symptoms. No complications noted. Follow-up scheduled in 2 weeks.,1,2
-2,Moderate symptoms requiring medication adjustment. Patient responding well to treatment.,2,2
-3,No significant symptoms reported. Patient appears stable and asymptomatic.,0,0
-4,Severe condition requiring immediate hospitalization. Emergency intervention performed.,3,3
-5,Patient shows mild improvement from previous visit. Continuing current treatment plan.,1a,1
-6,Asymptomatic. All vital signs are normal. Routine check-up.,0,0
-7,Patient reports significant worsening of symptoms. Requires urgent re-evaluation.,3a,4
-8,Minor issues noted. Patient prescribed new medication. Condition is 1b.,1b,1B
-9,"Patient stable, symptoms are mild and well-managed with current therapy.",1,1
-10,Moderate flare-up of chronic condition. Adjusting dosage.,2,2
-11,Patient in critical condition. Transferred to ICU.,3,4
-12,Full recovery. No symptoms present. Patient discharged.,0,NR
-13,Symptoms are present but not severe. Monitoring closely. Score: 1.,1,1
-14,Patient reports feeling 'much worse' than last visit. Significant intervention needed.,3,3
-15,Stable condition. No changes to report. Continue existing plan.,0,NR
-16,Mild side effects from new medication. Symptoms are 1a.,1a,1A
-17,Patient's condition has deteriorated. Requires specialist consultation.,2a,NR
-18,Patient presents with acute distress. Admitted for observation.,3,NR
-19,Symptoms have completely resolved. Patient feels excellent.,0,NR
-20,"Moderate symptoms, but patient is not responding to standard treatment.",2,2
-21,"Chronic condition, but currently in remission. No active symptoms.",0,NR
-22,"Patient reports severe, debilitating symptoms. Immediate action required.",3,3
-23,Symptoms are mild and manageable. Patient advised to rest.,1,1
-24,Patient's status is unclear. Symptoms are contradictory. Requires further testing.,NR,NR
-25,Condition has progressed. Symptoms are now moderate.,2,2
-26,Patient presents with no complaints. All labs normal.,0,NR
-27,Mild symptoms detected during routine screening. Classification 1b.,1b,1B
-28,Patient is non-responsive. Critical care team activated.,3,4
-29,"Symptoms are slightly worse than last visit, but not severe. Score is 1a.",1a,1A
-30,Patient shows clear signs of improvement. Symptoms are now mild.,1,1
-31,No acute distress. Patient is stable and comfortable.,0,NR
-32,Serious complications have developed. Patient's condition is 3a.,3a,3A
-33,Symptoms are moderate and persistent. Recommending physical therapy.,2,2
-34,Patient reports feeling perfectly fine. No issues.,0,NR
-35,Severe allergic reaction. Administered epinephrine.,3,3
-36,Patient reports 'feeling off'. Symptoms are mild but vague. Score: 1.,1,1
-37,All tests came back negative. Patient is asymptomatic.,0,0
-38,Symptoms have escalated from mild to moderate. Adjusting treatment plan.,2,1
-39,Patient's condition is life-threatening. Score is 3b.,3b,3B
-40,Mild improvement noted. Patient is responding slowly to treatment. Score 1a.,1a,1A
-41,"No symptoms reported, but screening shows minor anomaly. Classification 1b.",1b,1B
-42,"Patient stable, but symptoms are persistent. Class 2a.",2a,2A
-43,Complete resolution of all symptoms. Patient cleared.,0,NR
-44,Patient reports moderate discomfort. Vitals are stable.,2,2
-45,Symptoms are severe and acute. Admitting to hospital.,3,3
-46,Patient feels good. No active complaints. Status: 0.,0,0
-47,Mild symptoms have returned after a period of remission.,1,1
-48,Patient's condition is complex. Symptoms are moderate to severe. Score 2a.,2a,2A
-49,Patient in critical condition. All measures being taken.,3,4
-50,No significant findings. Patient is healthy.,0,NR
+Report_ID,Report Text,Symptom Severity,Symptom Severity_model_(llama3:latest)_rag_enabled_(True)_embeddings_(all-mpnet-base-v2)_retriever_(vectorstore)_reranker_(True)_simple_prompting_(True)_fewshots_method_(True)_fewshots_with_NR_method_(False)_fewshots_with_NR_extended_(False)_json_(True)_temp_(0.1)_top_k_(40)_top_p_(0.9)
+1,Patient presents with mild symptoms. No complications noted. Follow-up scheduled in 2 weeks.,1,"{""Symptom Severity"": ""2""}"
+2,Moderate symptoms requiring medication adjustment. Patient responding well to treatment.,2,"{""Symptom Severity"": ""2""}"
+3,No significant symptoms reported. Patient appears stable and asymptomatic.,0,"{""Symptom Severity"": ""0""}"
+4,Severe condition requiring immediate hospitalization. Emergency intervention performed.,3,"{""Symptom Severity"": ""3""}"
+5,Patient shows mild improvement from previous visit. Continuing current treatment plan.,1a,"{""Symptom Severity"": ""1""}"
+6,Asymptomatic. All vital signs are normal. Routine check-up.,0,"{""Symptom Severity"": ""0""}"
+7,Patient reports significant worsening of symptoms. Requires urgent re-evaluation.,3a,"{""Symptom Severity"": ""4""}"
+8,Minor issues noted. Patient prescribed new medication. Condition is 1b.,1b,"{""Symptom Severity"": ""1B""}"
+9,"Patient stable, symptoms are mild and well-managed with current therapy.",1,"{""Symptom Severity"": ""1""}"
+10,Moderate flare-up of chronic condition. Adjusting dosage.,2,"{""Symptom Severity"": ""2""}"
+12,Full recovery. No symptoms present. Patient discharged.,0,"{""Symptom Severity"": ""NR""}"
+13,Symptoms are present but not severe. Monitoring closely. Score: 1.,1,"{""Symptom Severity"": ""1""}"
+14,Patient reports feeling 'much worse' than last visit. Significant intervention needed.,3,"{""Symptom Severity"": ""3""}"
+15,Stable condition. No changes to report. Continue existing plan.,0,"{""Symptom Severity"": ""NR""}"
+16,Mild side effects from new medication. Symptoms are 1a.,1a,"{""Symptom Severity"": ""1A""}"
+17,Patient's condition has deteriorated. Requires specialist consultation.,2a,"{""Symptom Severity"": ""NR""}"
+18,Patient presents with acute distress. Admitted for observation.,3,"{""Symptom Severity"": ""NR""}"
+19,Symptoms have completely resolved. Patient feels excellent.,0,"{""Symptom Severity"": ""NR""}"
+20,"Moderate symptoms, but patient is not responding to standard treatment.",2,"{""Symptom Severity"": ""2""}"
+21,"Chronic condition, but currently in remission. No active symptoms.",0,"{""Symptom Severity"": ""NR""}"
+22,"Patient reports severe, debilitating symptoms. Immediate action required.",3,"{""Symptom Severity"": ""3""}"
+23,Symptoms are mild and manageable. Patient advised to rest.,1,"{""Symptom Severity"": ""1""}"
+24,Patient's status is unclear. Symptoms are contradictory. Requires further testing.,NR,"{""Symptom Severity"": ""NR""}"
+25,Condition has progressed. Symptoms are now moderate.,2,"{""Symptom Severity"": ""2""}"
+26,Patient presents with no complaints. All labs normal.,0,"{""Symptom Severity"": ""NR""}"
+27,Mild symptoms detected during routine screening. Classification 1b.,1b,"{""Symptom Severity"": ""1B""}"
+28,Patient is non-responsive. Critical care team activated.,3,"{""Symptom Severity"": ""4""}"
+29,"Symptoms are slightly worse than last visit, but not severe. Score is 1a.",1a,"{""Symptom Severity"": ""1A""}"
+30,Patient shows clear signs of improvement. Symptoms are now mild.,1,"{""Symptom Severity"": ""1""}"
+31,No acute distress. Patient is stable and comfortable.,0,"{""Symptom Severity"": ""NR""}"
+32,Serious complications have developed. Patient's condition is 3a.,3a,"{
+""Symptom Severity"": ""3a""
+}"
+33,Symptoms are moderate and persistent. Recommending physical therapy.,2,"{""Symptom Severity"": ""2""}"
+34,Patient reports feeling perfectly fine. No issues.,0,"{""Symptom Severity"": ""NR""}"
+35,Severe allergic reaction. Administered epinephrine.,3,"{""Symptom Severity"": ""3""}"
+36,Patient reports 'feeling off'. Symptoms are mild but vague. Score: 1.,1,"{""Symptom Severity"": ""1""}"
+37,All tests came back negative. Patient is asymptomatic.,0,"{""Symptom Severity"": ""0""}"
+38,Symptoms have escalated from mild to moderate. Adjusting treatment plan.,2,"{""Symptom Severity"": ""1""}"
+39,Patient's condition is life-threatening. Score is 3b.,3b,"{""Symptom Severity"": ""3B""}"
+40,Mild improvement noted. Patient is responding slowly to treatment. Score 1a.,1a,"{""Symptom Severity"": ""1A""}"
+41,"No symptoms reported, but screening shows minor anomaly. Classification 1b.",1b,"{""Symptom Severity"": ""1B""}"
+42,"Patient stable, but symptoms are persistent. Class 2a.",2a,"{""Symptom Severity"": ""2A""}"
+43,Complete resolution of all symptoms. Patient cleared.,0,"{""Symptom Severity"": ""NR""}"
+44,Patient reports moderate discomfort. Vitals are stable.,2,"{""Symptom Severity"": ""2""}"
+45,Symptoms are severe and acute. Admitting to hospital.,3,"{""Symptom Severity"": ""3""}"
+46,Patient feels good. No active complaints. Status: 0.,0,"{""Symptom Severity"": ""0""}"
+47,Mild symptoms have returned after a period of remission.,1,"{""Symptom Severity"": ""1""}"
+48,Patient's condition is complex. Symptoms are moderate to severe. Score 2a.,2a,"{""Symptom Severity"": ""2A""}"
+49,Patient in critical condition. All measures being taken.,3,"{""Symptom Severity"": ""4""}"
+50,No significant findings. Patient is healthy.,0,"{""Symptom Severity"": ""NR""}"
