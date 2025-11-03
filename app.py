@@ -183,14 +183,11 @@ def run_processing(job_id, config_path):
         processing_status[job_id]['message'] = 'Loading configuration...'
         processing_status[job_id]['progress'] = 10
         
-        # Load config
-        medextract.config = medextract.load_config(config_path)
-        
         processing_status[job_id]['message'] = 'Processing medical reports...'
         processing_status[job_id]['progress'] = 30
         
-        # Run main processing
-        medextract.main()
+        # Run main processing with the config path (fixed to pass config correctly)
+        medextract.main(config_path=config_path)
         
         processing_status[job_id]['status'] = 'completed'
         processing_status[job_id]['progress'] = 100
