@@ -138,6 +138,16 @@ def configure():
         }
         
         # Save config to temporary file
+        # If the user requested RAG but the medextract module does not have
+        # the optional langchain/langchain_community libraries available,
+        # warn the user and disable RAG in the saved config. medextract.py
+        # will also silently disable RAG at runtime if libraries are missing,
+        # but surfacing this here avoids confusing behavior where the UI
+        # appears to enable RAG but results still show RAG=False.
+        if config['rag'].get('enabled', False) and not getattr(medextract, '_HAVE_LANGCHAIN', False):
+            flash('RAG requested but server is missing required libraries (langchain/langchain_community). RAG will be disabled. Install requirements and restart the server to enable RAG.', 'warning')
+            config['rag']['enabled'] = False
+
         config_path = f'config/temp_config_{session["uploaded_file"].split("_")[0]}.yaml'
         with open(config_path, 'w') as f:
             yaml.dump(config, f)

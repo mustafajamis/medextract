@@ -1,6 +1,51 @@
-Report_ID,Report Text,BTFU Score (Updated)
+Report_ID,Report Text,Symptom Severity
 001,"Patient presents with mild symptoms. No complications noted. Follow-up scheduled in 2 weeks.",1
 002,"Moderate symptoms requiring medication adjustment. Patient responding well to treatment.",2
 003,"No significant symptoms reported. Patient appears stable and asymptomatic.",0
 004,"Severe condition requiring immediate hospitalization. Emergency intervention performed.",3
 005,"Patient shows mild improvement from previous visit. Continuing current treatment plan.",1a
+006,"Asymptomatic. All vital signs are normal. Routine check-up.",0
+007,"Patient reports significant worsening of symptoms. Requires urgent re-evaluation.",3a
+008,"Minor issues noted. Patient prescribed new medication. Condition is 1b.",1b
+009,"Patient stable, symptoms are mild and well-managed with current therapy.",1
+010,"Moderate flare-up of chronic condition. Adjusting dosage.",2
+011,"Patient in critical condition. Transferred to ICU.",3F1a
+012,"Full recovery. No symptoms present. Patient discharged.",0
+013,"Symptoms are present but not severe. Monitoring closely. Score: 1.",1
+014,"Patient reports feeling 'much worse' than last visit. Significant intervention needed.",3
+015,"Stable condition. No changes to report. Continue existing plan.",0
+016,"Mild side effects from new medication. Symptoms are 1a.",1a
+017,"Patient's condition has deteriorated. Requires specialist consultation.",2a
+018,"Patient presents with acute distress. Admitted for observation.",3
+019,"Symptoms have completely resolved. Patient feels excellent.",0
+020,"Moderate symptoms, but patient is not responding to standard treatment.",2
+021,"Chronic condition, but currently in remission. No active symptoms.",0
+022,"Patient reports severe, debilitating symptoms. Immediate action required.",3
+023,"Symptoms are mild and manageable. Patient advised to rest.",1
+024,"Patient's status is unclear. Symptoms are contradictory. Requires further testing.",NR
+025,"Condition has progressed. Symptoms are now moderate.",2
+026,"Patient presents with no complaints. All labs normal.",0
+027,"Mild symptoms detected during routine screening. Classification 1b.",1b
+028,"Patient is non-responsive. Critical care team activated.",3
+029,"Symptoms are slightly worse than last visit, but not severe. Score is 1a.",1a
+030,"Patient shows clear signs of improvement. Symptoms are now mild.",1
+031,"No acute distress. Patient is stable and comfortable.",0
+032,"Serious complications have developed. Patient's condition is 3a.",3a
+033,"Symptoms are moderate and persistent. Recommending physical therapy.",2
+034,"Patient reports feeling perfectly fine. No issues.",0
+035,"Severe allergic reaction. Administered epinephrine.",3
+036,"Patient reports 'feeling off'. Symptoms are mild but vague. Score: 1.",1
+037,"All tests came back negative. Patient is asymptomatic.",0
+038,"Symptoms have escalated from mild to moderate. Adjusting treatment plan.",2
+039,"Patient's condition is life-threatening. Score is 3b.",3b
+040,"Mild improvement noted. Patient is responding slowly to treatment. Score 1a.",1a
+041,"No symptoms reported, but screening shows minor anomaly. Classification 1b.",1b
+042,"Patient stable, but symptoms are persistent. Class 2a.",2a
+043,"Complete resolution of all symptoms. Patient cleared.",0
+044,"Patient reports moderate discomfort. Vitals are stable.",2
+045,"Symptoms are severe and acute. Admitting to hospital.",3
+046,"Patient feels good. No active complaints. Status: 0.",0
+047,"Mild symptoms have returned after a period of remission.",1
+048,"Patient's condition is complex. Symptoms are moderate to severe. Score 2a.",2a
+049,"Patient in critical condition. All measures being taken.",3
+050,"No significant findings. Patient is healthy.",0

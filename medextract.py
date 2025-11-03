@@ -771,22 +771,34 @@ def main(config_path=None):
         else:
             embeddings = OllamaEmbeddings(model="mistral") if OllamaEmbeddings is not None else None
         
-        column_name = config['column_name_format'].format(
-            target_variable=config['evaluation']['target_variable'],
-            model=llm_model.replace("/", "__"),
-            rag=rag_enabled,
-            embeddings=embedding_model.replace("/", "__"),
-            retriever=retriever_type,
-            reranker=use_reranker,
-            simple=simple_prompting,
-            fewshots=fewshots_method,
-            nr=fewshots_with_NR_method,
-            nr_extended=fewshots_with_NR_extended_method,
-            json=json_value,
-            temp=temp,
-            top_k=top_k,
-            top_p=top_p
-        )
+        # Create column name. Support two styles:
+        # - 'verbose' (full details controlled by column_name_format)
+        # - 'short' (compact, human-friendly)
+        style = config.get('output', {}).get('column_name_style', 'verbose')
+        if style == 'short':
+            # Short, readable column name: <Target>_pred_<model>_<RAG|NoRAG>_<Rerank|NoRerank>
+            model_short = llm_model.split(':')[0].replace('/', '__') if isinstance(llm_model, str) else str(llm_model)
+            emb_short = embedding_model.split('/')[0].replace('/', '__') if isinstance(embedding_model, str) else str(embedding_model)
+            rag_flag = 'RAG' if rag_enabled else 'NoRAG'
+            rerank_flag = 'Rerank' if use_reranker else 'NoRerank'
+            column_name = f"{config['evaluation']['target_variable']}_pred_{model_short}_{rag_flag}_{rerank_flag}"
+        else:
+            column_name = config['column_name_format'].format(
+                target_variable=config['evaluation']['target_variable'],
+                model=llm_model.replace("/", "__"),
+                rag=rag_enabled,
+                embeddings=embedding_model.replace("/", "__"),
+                retriever=retriever_type,
+                reranker=use_reranker,
+                simple=simple_prompting,
+                fewshots=fewshots_method,
+                nr=fewshots_with_NR_method,
+                nr_extended=fewshots_with_NR_extended_method,
+                json=json_value,
+                temp=temp,
+                top_k=top_k,
+                top_p=top_p
+            )
         
         if column_name not in df.columns:
             # create column with object dtype so we can store stringified JSON results
