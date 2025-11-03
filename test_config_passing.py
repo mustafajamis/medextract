@@ -10,92 +10,100 @@ import yaml
 
 def load_config(config_path='config/config.yaml', default_config_path='config/default_config.yaml'):
     """Simplified version of medextract.load_config for testing."""
-    with open(default_config_path, 'r') as file:
-        default_config = yaml.safe_load(file)
-    
-    with open(config_path, 'r') as file:
-        user_config = yaml.safe_load(file)
-    
-    if user_config.get('use_default_config', False):
-        return default_config
-    else:
-        merged = {**default_config, **user_config}
-        return merged
+    try:
+        with open(default_config_path, 'r') as file:
+            default_config = yaml.safe_load(file)
+        
+        with open(config_path, 'r') as file:
+            user_config = yaml.safe_load(file)
+        
+        if user_config.get('use_default_config', False):
+            return default_config
+        else:
+            merged = {**default_config, **user_config}
+            return merged
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f"Configuration file not found: {e.filename}")
+    except yaml.YAMLError as e:
+        raise ValueError(f"Invalid YAML in configuration file: {e}")
 
 def test_config_passing():
     """Test that config_path parameter works in main() function."""
     print("Testing configuration passing...")
     
-    # Create a temporary config file with RAG enabled
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
-        test_config = {
-            'file_paths': {
-                'input': 'data/input/test.csv',
-                'figures': 'data/output/figures/',
-                'results': 'data/output/results/',
-                'metrics': 'data/output/results/metrics.csv',
-                'log': 'data/output/results/log.csv',
-                'predictions': 'data/output/predictions.csv'
-            },
-            'processing': {
-                'batch_size': 10,
-                'process_all': False,
-                'verbose': False,
-                'timeout_duration': 100,
-                'csv_save_frequency': 10
-            },
-            'rag': {
-                'enabled': True,  # This should be preserved
-                'chunk_size': 70,
-                'chunk_overlap': 20
-            },
-            'models': {
-                'llm_models': ['llama3:latest']
-            },
-            'prompting': {
-                'simple_prompting': True,
-                'fewshots_method': True,
-                'fewshots_with_NR_method': False,
-                'fewshots_with_NR_extended_method': False
-            },
-            'output': {
-                'json_format': True
-            },
-            'sampling': {
-                'temperatures': [0.1],
-                'top_ks': [40],
-                'top_ps': [0.9]
-            },
-            'embedding_models': ['all-MiniLM-L6-v2'],
-            'retriever': {
-                'types': ['vectorstore'],
-                'use_reranker': False,
-                'reranker_model_name': 'BAAI/bge-reranker-v2-m3',
-                'reranker_top_n': 2
-            },
-            'evaluation': {
-                'target_variable': 'BTFU Score (Updated)',
-                'valid_values': ['0', '1', '1a', '1b', '2', '2a', '2b', '3', '3a', '3b', '3c', '4', 'NR']
-            },
-            'run_benchmark': False,
-            'advanced_llm': {
-                'keep_alive': 0,
-                'num_predict': None,
-                'mirostat_tau': None
-            },
-            'few_shot_examples': {},
-            'system_prompts': {
-                'simple': 'Test prompt',
-                'complex': 'Test prompt'
-            },
-            'metrics': ['accuracy'],
-            'column_name_format': 'test_rag_({rag})',
-            'library_versions': {}
-        }
-        yaml.dump(test_config, f)
-        config_path = f.name
+    config_path = None
+    config_path_disabled = None
     
     try:
+        # Create a temporary config file with RAG enabled
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+            test_config = {
+                'file_paths': {
+                    'input': 'data/input/test.csv',
+                    'figures': 'data/output/figures/',
+                    'results': 'data/output/results/',
+                    'metrics': 'data/output/results/metrics.csv',
+                    'log': 'data/output/results/log.csv',
+                    'predictions': 'data/output/predictions.csv'
+                },
+                'processing': {
+                    'batch_size': 10,
+                    'process_all': False,
+                    'verbose': False,
+                    'timeout_duration': 100,
+                    'csv_save_frequency': 10
+                },
+                'rag': {
+                    'enabled': True,  # This should be preserved
+                    'chunk_size': 70,
+                    'chunk_overlap': 20
+                },
+                'models': {
+                    'llm_models': ['llama3:latest']
+                },
+                'prompting': {
+                    'simple_prompting': True,
+                    'fewshots_method': True,
+                    'fewshots_with_NR_method': False,
+                    'fewshots_with_NR_extended_method': False
+                },
+                'output': {
+                    'json_format': True
+                },
+                'sampling': {
+                    'temperatures': [0.1],
+                    'top_ks': [40],
+                    'top_ps': [0.9]
+                },
+                'embedding_models': ['all-MiniLM-L6-v2'],
+                'retriever': {
+                    'types': ['vectorstore'],
+                    'use_reranker': False,
+                    'reranker_model_name': 'BAAI/bge-reranker-v2-m3',
+                    'reranker_top_n': 2
+                },
+                'evaluation': {
+                    'target_variable': 'BTFU Score (Updated)',
+                    'valid_values': ['0', '1', '1a', '1b', '2', '2a', '2b', '3', '3a', '3b', '3c', '4', 'NR']
+                },
+                'run_benchmark': False,
+                'advanced_llm': {
+                    'keep_alive': 0,
+                    'num_predict': None,
+                    'mirostat_tau': None
+                },
+                'few_shot_examples': {},
+                'system_prompts': {
+                    'simple': 'Test prompt',
+                    'complex': 'Test prompt'
+                },
+                'metrics': ['accuracy'],
+                'column_name_format': 'test_rag_({rag})',
+                'library_versions': {}
+            }
+            yaml.dump(test_config, f)
+            config_path = f.name
+        
         # Test that load_config works
         loaded_config = load_config(config_path, 'config/default_config.yaml')
         
@@ -120,7 +128,6 @@ def test_config_passing():
         column_name_disabled = loaded_config_disabled['column_name_format'].format(rag=loaded_config_disabled['rag']['enabled'])
         assert 'False' in column_name_disabled, f"Column name should contain 'False' when RAG is disabled, got: {column_name_disabled}"
         print(f"✓ Column name correctly includes RAG status when disabled: {column_name_disabled}")
-        os.unlink(config_path_disabled)
         
         print("\n✓ All tests passed!")
         print("\nConfiguration passing is working correctly:")
@@ -133,9 +140,11 @@ def test_config_passing():
         return True
         
     finally:
-        # Clean up temp file
-        if os.path.exists(config_path):
+        # Clean up temp files
+        if config_path and os.path.exists(config_path):
             os.unlink(config_path)
+        if config_path_disabled and os.path.exists(config_path_disabled):
+            os.unlink(config_path_disabled)
 
 if __name__ == '__main__':
     try:
