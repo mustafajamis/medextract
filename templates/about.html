@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}About - MedExtract Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="bi bi-info-circle"></i> About MedExtract
+            </div>
+            <div class="card-body">
+                <h3>What is MedExtract?</h3>
+                <p class="lead">
+                    MedExtract is a clinical datapoint extraction system that uses Large Language Models (LLMs) 
+                    and Retrieval-Augmented Generation (RAG) to extract specific information from medical reports.
+                </p>
+                
+                <hr>
+                
+                <h4>Key Technologies</h4>
+                <div class="row mt-3">
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 bg-light">
+                            <div class="card-body">
+                                <h5><i class="bi bi-robot text-primary"></i> Large Language Models</h5>
+                                <p>
+                                    Powered by state-of-the-art LLMs like Llama 3 and Mistral, MedExtract 
+                                    understands medical terminology and context to accurately extract clinical datapoints.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 bg-light">
+                            <div class="card-body">
+                                <h5><i class="bi bi-search text-primary"></i> RAG Technology</h5>
+                                <p>
+                                    Retrieval-Augmented Generation combines document retrieval with generation, 
+                                    ensuring that extracted information is grounded in the actual report content.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 bg-light">
+                            <div class="card-body">
+                                <h5><i class="bi bi-layers text-primary"></i> Vector Embeddings</h5>
+                                <p>
+                                    Uses sentence transformers to create semantic embeddings of medical text, 
+                                    enabling intelligent retrieval of relevant information.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 bg-light">
+                            <div class="card-body">
+                                <h5><i class="bi bi-speedometer2 text-primary"></i> Performance Metrics</h5>
+                                <p>
+                                    Comprehensive evaluation with accuracy, precision, recall, and F1 scores, 
+                                    along with confusion matrices for detailed analysis.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <h4>Target Audience</h4>
+                <p>
+                    This dashboard is designed for:
+                </p>
+                <ul>
+                    <li><strong>Biologists and Researchers:</strong> Extract structured data from unstructured medical reports</li>
+                    <li><strong>Health Scientists:</strong> Analyze clinical outcomes and patient data at scale</li>
+                    <li><strong>Healthcare Professionals:</strong> Automate extraction of key clinical indicators</li>
+                    <li><strong>Data Analysts:</strong> Generate datasets for medical research and analysis</li>
+                </ul>
+                
+                <hr>
+                
+                <h4>How It Works</h4>
+                <div class="row mt-3">
+                    <div class="col-md-3 text-center mb-3">
+                        <div class="feature-icon">
+                            <i class="bi bi-1-circle"></i>
+                        </div>
+                        <h6>Upload</h6>
+                        <p class="small text-muted">Upload your CSV file with medical reports</p>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <div class="feature-icon">
+                            <i class="bi bi-2-circle"></i>
+                        </div>
+                        <h6>Configure</h6>
+                        <p class="small text-muted">Customize AI models and processing parameters</p>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <div class="feature-icon">
+                            <i class="bi bi-3-circle"></i>
+                        </div>
+                        <h6>Process</h6>
+                        <p class="small text-muted">AI extracts clinical datapoints from reports</p>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <div class="feature-icon">
+                            <i class="bi bi-4-circle"></i>
+                        </div>
+                        <h6>Analyze</h6>
+                        <p class="small text-muted">View results, metrics, and visualizations</p>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <h4>Features</h4>
+                <ul>
+                    <li>Support for multiple LLM models (Llama 3, Mistral, Llama 2)</li>
+                    <li>Configurable RAG with various embedding models</li>
+                    <li>Multiple retriever types (vector store, ensemble)</li>
+                    <li>Reranking for improved relevance</li>
+                    <li>Few-shot learning capabilities</li>
+                    <li>Rule-based fallback extraction</li>
+                    <li>Comprehensive performance evaluation</li>
+                    <li>Visual analytics with confusion matrices</li>
+                    <li>Easy CSV export of results</li>
+                </ul>
+                
+                <hr>
+                
+                <div class="alert alert-info">
+                    <h5><i class="bi bi-book"></i> Documentation</h5>
+                    <p class="mb-0">
+                        For detailed setup instructions and tutorial, see the 
+                        <strong>DASHBOARD_TUTORIAL.md</strong> file in the repository.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-github"></i> Technical Details
+            </div>
+            <div class="card-body">
+                <p>
+                    <strong>Repository:</strong> 
+                    <a href="https://github.com/mustafajamis/medextract" target="_blank">
+                        https://github.com/mustafajamis/medextract
+                    </a>
+                </p>
+                <p>
+                    <strong>Backend:</strong> Python 3.7+, medextract.py
+                </p>
+                <p>
+                    <strong>Frontend:</strong> Flask web framework with Bootstrap 5
+                </p>
+                <p>
+                    <strong>Dependencies:</strong> LangChain, Ollama, sentence-transformers, FAISS, pandas, scikit-learn
+                </p>
+                <p class="mb-0">
+                    <strong>License:</strong> MIT License
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

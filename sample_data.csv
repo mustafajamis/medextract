@@ -1,0 +1,6 @@
+Report_ID,Report Text,BTFU Score (Updated)
+001,"Patient presents with mild symptoms. No complications noted. Follow-up scheduled in 2 weeks.",1
+002,"Moderate symptoms requiring medication adjustment. Patient responding well to treatment.",2
+003,"No significant symptoms reported. Patient appears stable and asymptomatic.",0
+004,"Severe condition requiring immediate hospitalization. Emergency intervention performed.",3
+005,"Patient shows mild improvement from previous visit. Continuing current treatment plan.",1a

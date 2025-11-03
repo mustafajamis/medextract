@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}Configure - MedExtract Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-gear"></i> Configure Processing Parameters
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <!-- Processing Options -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            <i class="bi bi-cpu"></i> Processing Options
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="batch_size" class="form-label">Batch Size</label>
+                                    <input type="number" class="form-control" id="batch_size" name="batch_size" 
+                                           value="{{ config.processing.batch_size }}" min="1" max="1000">
+                                    <div class="form-text">Number of reports to process (leave default for small batches)</div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="timeout_duration" class="form-label">Timeout Duration (seconds)</label>
+                                    <input type="number" class="form-control" id="timeout_duration" name="timeout_duration" 
+                                           value="{{ config.processing.timeout_duration }}" min="30" max="600">
+                                    <div class="form-text">Maximum time per report</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input type="checkbox" class="form-check-input" id="process_all" name="process_all">
+                                <label class="form-check-label" for="process_all">
+                                    Process all reports (ignore batch size)
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input type="checkbox" class="form-check-input" id="verbose" name="verbose">
+                                <label class="form-check-label" for="verbose">
+                                    Verbose output (show detailed processing)
+                                </label>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="use_rule_based" name="use_rule_based">
+                                <label class="form-check-label" for="use_rule_based">
+                                    Use rule-based extraction only (faster, no LLM required)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Model Selection -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            <i class="bi bi-robot"></i> AI Model Settings
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="llm_model" class="form-label">LLM Model</label>
+                                <select class="form-select" id="llm_model" name="llm_model">
+                                    <option value="llama3:latest" selected>Llama 3 (Latest)</option>
+                                    <option value="mistral:latest">Mistral (Latest)</option>
+                                    <option value="llama2:latest">Llama 2 (Latest)</option>
+                                </select>
+                                <div class="form-text">Select the language model for extraction (must be installed in Ollama)</div>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="simple_prompting" name="simple_prompting" checked>
+                                <label class="form-check-label" for="simple_prompting">
+                                    Use simple prompting (recommended)
+                                </label>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="fewshots_method" name="fewshots_method" checked>
+                                <label class="form-check-label" for="fewshots_method">
+                                    Enable few-shot learning
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RAG Settings -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            <i class="bi bi-search"></i> RAG (Retrieval-Augmented Generation) Settings
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" id="rag_enabled" name="rag_enabled" 
+                                       {% if config.rag.enabled %}checked{% endif %}>
+                                <label class="form-check-label" for="rag_enabled">
+                                    <strong>Enable RAG</strong> (improves accuracy by retrieving relevant text chunks)
+                                </label>
+                            </div>
+                            
+                            <div id="rag_options">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="chunk_size" class="form-label">Chunk Size</label>
+                                        <input type="number" class="form-control" id="chunk_size" name="chunk_size" 
+                                               value="{{ config.rag.chunk_size }}" min="20" max="500">
+                                    </div>
+                                    
+                                    <div class="col-md-4 mb-3">
+                                        <label for="chunk_overlap" class="form-label">Chunk Overlap</label>
+                                        <input type="number" class="form-control" id="chunk_overlap" name="chunk_overlap" 
+                                               value="{{ config.rag.chunk_overlap }}" min="0" max="100">
+                                    </div>
+                                    
+                                    <div class="col-md-4 mb-3">
+                                        <label for="retriever_type" class="form-label">Retriever Type</label>
+                                        <select class="form-select" id="retriever_type" name="retriever_type">
+                                            <option value="vectorstore" selected>Vector Store</option>
+                                            <option value="ensemble">Ensemble (Vector + BM25)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="embedding_model" class="form-label">Embedding Model</label>
+                                    <select class="form-select" id="embedding_model" name="embedding_model">
+                                        <option value="all-MiniLM-L6-v2" selected>all-MiniLM-L6-v2 (Fast, recommended)</option>
+                                        <option value="all-mpnet-base-v2">all-mpnet-base-v2 (Better quality)</option>
+                                        <option value="mistral">Mistral (via Ollama)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="use_reranker" name="use_reranker" 
+                                           {% if config.retriever.use_reranker %}checked{% endif %}>
+                                    <label class="form-check-label" for="use_reranker">
+                                        Use reranker (improves relevance but slower)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sampling Parameters -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            <i class="bi bi-sliders"></i> Sampling Parameters
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="temperature" class="form-label">
+                                        Temperature: <span id="temp_value">0.1</span>
+                                    </label>
+                                    <input type="range" class="form-range" id="temperature" name="temperature" 
+                                           min="0" max="1" step="0.1" value="0.1" 
+                                           oninput="document.getElementById('temp_value').textContent = this.value">
+                                    <div class="form-text">Lower = more deterministic</div>
+                                </div>
+                                
+                                <div class="col-md-4 mb-3">
+                                    <label for="top_k" class="form-label">
+                                        Top K: <span id="top_k_value">40</span>
+                                    </label>
+                                    <input type="range" class="form-range" id="top_k" name="top_k" 
+                                           min="1" max="100" step="1" value="40"
+                                           oninput="document.getElementById('top_k_value').textContent = this.value">
+                                </div>
+                                
+                                <div class="col-md-4 mb-3">
+                                    <label for="top_p" class="form-label">
+                                        Top P: <span id="top_p_value">0.9</span>
+                                    </label>
+                                    <input type="range" class="form-range" id="top_p" name="top_p" 
+                                           min="0" max="1" step="0.1" value="0.9"
+                                           oninput="document.getElementById('top_p_value').textContent = this.value">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle"></i> Save Configuration & Start Processing
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Toggle RAG options visibility
+    document.getElementById('rag_enabled').addEventListener('change', function() {
+        document.getElementById('rag_options').style.display = this.checked ? 'block' : 'none';
+    });
+    
+    // Initialize RAG options visibility
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('rag_options').style.display = 
+            document.getElementById('rag_enabled').checked ? 'block' : 'none';
+    });
+</script>
+{% endblock %}

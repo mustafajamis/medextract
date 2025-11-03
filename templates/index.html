@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Home - MedExtract Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-12 text-center">
+        <h1 class="display-4 mb-3">
+            <i class="bi bi-activity"></i> Welcome to MedExtract Dashboard
+        </h1>
+        <p class="lead text-muted">
+            Transform complex medical reports into actionable insights using AI-powered extraction
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="feature-icon">
+                    <i class="bi bi-cloud-upload"></i>
+                </div>
+                <h3>Upload Reports</h3>
+                <p class="text-muted">
+                    Upload your CSV file containing medical reports for analysis
+                </p>
+                <a href="{{ url_for('upload') }}" class="btn btn-primary">
+                    <i class="bi bi-upload"></i> Get Started
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="feature-icon">
+                    <i class="bi bi-gear"></i>
+                </div>
+                <h3>Configure</h3>
+                <p class="text-muted">
+                    Customize AI models, RAG settings, and processing parameters
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="feature-icon">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3>View Results</h3>
+                <p class="text-muted">
+                    Analyze extracted data with visualizations and download results
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-lightbulb"></i> Key Features
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle text-success"></i>
+                        <strong>AI-Powered Extraction:</strong> Uses advanced LLMs (Llama3, Mistral) to extract clinical datapoints
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle text-success"></i>
+                        <strong>RAG Technology:</strong> Retrieval-Augmented Generation for accurate information extraction
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle text-success"></i>
+                        <strong>Flexible Configuration:</strong> Customize embeddings, retrievers, and prompting strategies
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle text-success"></i>
+                        <strong>Performance Metrics:</strong> Evaluate accuracy with precision, recall, and F1 scores
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle text-success"></i>
+                        <strong>Visual Analytics:</strong> Confusion matrices and performance charts
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle text-success"></i>
+                        <strong>Easy Export:</strong> Download processed results in CSV format
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <div class="alert alert-info d-inline-block">
+            <i class="bi bi-info-circle"></i>
+            <strong>Getting Started:</strong> Click "Get Started" above to upload your medical reports CSV file
+        </div>
+    </div>
+</div>
+{% endblock %}

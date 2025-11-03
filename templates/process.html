@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Processing - MedExtract Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-gear-fill"></i> Processing Medical Reports
+            </div>
+            <div class="card-body text-center">
+                <div id="status-container">
+                    <div class="spinner-border text-primary mb-4" role="status" style="width: 4rem; height: 4rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    
+                    <h4 id="status-message">Initializing processing...</h4>
+                    
+                    <div class="progress my-4" style="height: 30px;">
+                        <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                             role="progressbar" style="width: 0%">
+                            <span id="progress-text">0%</span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-muted" id="detail-message">
+                        Please wait while we extract clinical datapoints from your medical reports...
+                    </p>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-info-circle"></i>
+                        <strong>Note:</strong> Processing time depends on the number of reports and selected model. 
+                        This may take several minutes for large datasets.
+                    </div>
+                </div>
+                
+                <div id="complete-container" style="display: none;">
+                    <div class="text-success mb-4">
+                        <i class="bi bi-check-circle" style="font-size: 4rem;"></i>
+                    </div>
+                    <h4 class="text-success">Processing Completed Successfully!</h4>
+                    <p class="text-muted">Your results are ready for viewing.</p>
+                    <a href="{{ url_for('results', job_id=job_id) }}" class="btn btn-success btn-lg mt-3">
+                        <i class="bi bi-graph-up"></i> View Results
+                    </a>
+                </div>
+                
+                <div id="error-container" style="display: none;">
+                    <div class="text-danger mb-4">
+                        <i class="bi bi-exclamation-triangle" style="font-size: 4rem;"></i>
+                    </div>
+                    <h4 class="text-danger">Processing Error</h4>
+                    <p id="error-message" class="text-muted"></p>
+                    <a href="{{ url_for('upload') }}" class="btn btn-primary mt-3">
+                        <i class="bi bi-arrow-left"></i> Try Again
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const jobId = '{{ job_id }}';
+    
+    function checkStatus() {
+        fetch(`/status/${jobId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'processing') {
+                    document.getElementById('status-message').textContent = 'Processing in progress...';
+                    document.getElementById('detail-message').textContent = data.message || 'Processing reports...';
+                    
+                    const progress = data.progress || 0;
+                    document.getElementById('progress-bar').style.width = progress + '%';
+                    document.getElementById('progress-text').textContent = progress + '%';
+                    
+                    // Continue checking
+                    setTimeout(checkStatus, 2000);
+                } else if (data.status === 'completed') {
+                    document.getElementById('status-container').style.display = 'none';
+                    document.getElementById('complete-container').style.display = 'block';
+                } else if (data.status === 'error') {
+                    document.getElementById('status-container').style.display = 'none';
+                    document.getElementById('error-container').style.display = 'block';
+                    document.getElementById('error-message').textContent = data.message || 'An unknown error occurred';
+                }
+            })
+            .catch(error => {
+                console.error('Error checking status:', error);
+                setTimeout(checkStatus, 5000); // Retry after 5 seconds
+            });
+    }
+    
+    // Start checking status
+    checkStatus();
+</script>
+{% endblock %}
