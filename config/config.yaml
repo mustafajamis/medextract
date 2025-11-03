@@ -2,7 +2,7 @@
 
 # File paths
 file_paths:
-  input: "data/input/input.csv"
+  input: "data/input/input_reports.csv"
   figures: "data/output/figures/"
   results: "data/output/results/"
   metrics: "data/output/results/metrics.csv"
@@ -46,8 +46,10 @@ sampling:
   top_ps: [0.9]
 
 # Embedding models
+# Use a public, widely-available sentence-transformers model so embeddings can be created
+# without a gated Hugging Face token. Change back to a gated model if you have an HF token.
 embedding_models:
-  - "gte-large"
+  - "all-MiniLM-L6-v2"
 
 # Retriever settings
 retriever:

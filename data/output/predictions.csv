@@ -1,0 +1,27 @@
+Report_ID,Report_Text,BTFU Score (Updated),BTFU Score (Updated)_model_(llama3:latest)_rag_enabled_(False)_embeddings_(gte-large)_retriever_(vectorstore)_reranker_(True)_simple_prompting_(True)_fewshots_method_(True)_fewshots_with_NR_method_(False)_fewshots_with_NR_extended_(False)_json_(True)_temp_(0.1)_top_k_(40)_top_p_(0.9),BTFU Score (Updated)_model_(llama3:latest)_rag_enabled_(True)_embeddings_(all-MiniLM-L6-v2)_retriever_(vectorstore)_reranker_(True)_simple_prompting_(True)_fewshots_method_(True)_fewshots_with_NR_method_(False)_fewshots_with_NR_extended_(False)_json_(True)_temp_(0.1)_top_k_(40)_top_p_(0.9),BTFU Score (Updated)_model_(llama3:latest)_rag_enabled_(False)_embeddings_(all-MiniLM-L6-v2)_retriever_(vectorstore)_reranker_(True)_simple_prompting_(True)_fewshots_method_(True)_fewshots_with_NR_method_(False)_fewshots_with_NR_extended_(False)_json_(True)_temp_(0.1)_top_k_(40)_top_p_(0.9)
+1,"Patient John Doe, 45 years old, diagnosed with hypertension.",0,NR,NR,"{
+""BTFU Score (Updated)"": ""NR""
+}"
+2,"Jane Smith, 32, presented with acute bronchitis.",1,NR,NR,"{
+""BTFU Score (Updated)"": ""NR""
+}"
+3,CT scan shows a small lesion in the left temporal lobe. Recommend follow-up MRI.,2,NR,NR,"{
+""BTFU Score (Updated)"": ""NR""
+}"
+4,Patient complains of shortness of breath and chest pain. ECG normal.,3,8/10,NR,"{""BTFU Score (Updated)"": ""NR""}"
+5,Diabetic patient with HbA1c of 8.2%. Continue metformin and monitor.,1a,NR,NR,"{
+""BTFU Score (Updated)"": ""NR""
+}"
+6,Chronic back pain; prescribed ibuprofen 400mg every 8 hours.,2a,NR,NR,"{
+""BTFU Score (Updated)"": ""NR""
+}"
+7,Patient reports dizziness and palpitations. ECG shows atrial fibrillation.,3a,8/10,NR,"{""BTFU Score (Updated)"": ""NR""}"
+8,History of asthma; patient using fluticasone inhaler twice daily.,1b,NR,NR,"{
+""BTFU Score (Updated)"": ""NR""
+}"
+9,Abdominal pain and vomiting. Ultrasound shows gallstones.,NR,NR,NR,"{
+""BTFU Score (Updated)"": ""NR""
+}"
+10,Chronic kidney disease stage 3; monitor creatinine and adjust meds.,3b,NR,NR,"{
+""BTFU Score (Updated)"": ""NR""
+}"
