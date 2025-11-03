@@ -80,6 +80,47 @@ The `config/config.yaml` file contains all the configurable parameters for the p
 - Prompt engineering options
 - Evaluation settings
 
+## Common Issues & Troubleshooting
+
+### Dashboard Issues
+
+**Problem: RAG showing as disabled in results even when enabled**
+- **Solution**: This has been fixed in the latest version. Make sure you're using the updated code where `medextract.main()` accepts a `config_path` parameter.
+
+**Problem: Uploaded files not being processed**
+- **Solution**: The dashboard now correctly uses uploaded files. Your file is saved with a unique name in `data/input/` and automatically used for processing. You no longer need to manually place files in `data/input/input_reports.csv`.
+
+**Problem: Results show all "NR" (Not Reported) values**
+- **Cause**: This usually means RAG was disabled or the LLM couldn't read the reports properly.
+- **Solution**: 
+  1. Ensure RAG is enabled in the configuration page
+  2. Check that Ollama is running: `ollama list` should show your model
+  3. Verify your CSV has a "Report Text" column with actual medical text
+  4. Try with a smaller batch size first (10-20 reports) to test
+
+**Problem: Low accuracy results**
+- **Solutions**:
+  - Enable RAG for better context understanding
+  - Use the reranker option for improved relevance
+  - Enable few-shot learning
+  - Try the ensemble retriever
+  - Ensure ground truth labels are properly formatted
+
+### General Issues
+
+**Problem: Ollama not found**
+- Install Ollama from [ollama.ai](https://ollama.ai)
+- Run `ollama serve` to start the server
+- Pull the model: `ollama pull llama3`
+
+**Problem: Out of memory**
+- Reduce batch size in configuration
+- Disable RAG temporarily
+- Use a lighter embedding model
+- Close other applications
+
+For more detailed troubleshooting, see [DASHBOARD_TUTORIAL.md](DASHBOARD_TUTORIAL.md).
+
 ## Docker
 
 To run MedExtract using Docker:
