@@ -1,0 +1,202 @@
+# Improved Configuration for Medical Data Extraction
+# Based on deep analysis and algorithmic recommendations
+
+# File paths
+file_paths:
+  input: "data/input/input_reports.csv"
+  figures: "data/output/figures/"
+  results: "data/output/results/"
+  metrics: "data/output/results/metrics.csv"
+  log: "data/output/results/log.csv"
+  predictions: "data/output/predictions.csv"
+
+# Processing options
+processing:
+  batch_size: 100
+  process_all: false
+  verbose: true  # Enable for debugging
+  timeout_duration: 120  # Increased for complex reports
+  csv_save_frequency: 10
+  force_rule_based: false  # Use hybrid approach
+  reranker_device: "cpu"  # Use "cuda" if GPU available
+
+# RAG settings - SIGNIFICANTLY IMPROVED
+rag:
+  enabled: true
+  chunk_size: 400  # Increased from 70 to maintain context
+  chunk_overlap: 80  # Increased overlap to preserve continuity
+  # Reasoning: Medical reports need sentence-level context
+  # 400 chars ≈ 2-3 sentences, enough to capture severity indicators
+
+# Model settings
+models:
+  llm_models:
+    - "llama3:latest"
+    # Consider adding:
+    # - "meditron"  # Medical-specific model if available
+    # - "biomistral"
+  bit_quantization: "high"
+
+# Prompt settings - ENHANCED STRATEGY
+prompting:
+  simple_prompting: false  # Use detailed prompts
+  fewshots_method: true
+  fewshots_with_NR_method: true  # Include NR examples
+  fewshots_with_NR_extended_method: false
+
+# Output settings
+output:
+  json_format: true
+  column_name_style: "short"  # Use readable column names
+
+# Sampling parameters - OPTIMIZED FOR ACCURACY
+sampling:
+  temperatures: [0.0]  # Use greedy decoding for consistency
+  # Lower temperature = more deterministic = better for extraction
+  top_ks: [10]  # Reduced from 40 for more focused responses
+  top_ps: [0.85]  # Slightly reduced for better precision
+
+# Embedding models - MEDICAL-OPTIMIZED
+embedding_models:
+  # Recommended order (use best available):
+  - "pritamdeka/S-PubMedBert-MS-MARCO"  # Medical domain-specific
+  # Fallback general models:
+  # - "sentence-transformers/all-mpnet-base-v2"
+  # - "all-MiniLM-L6-v2"
+
+# Retriever settings - ENHANCED CONFIGURATION
+retriever:
+  types:
+    - "ensemble"  # Use ensemble for better coverage
+  use_reranker: true
+  reranker_model_name: "BAAI/bge-reranker-v2-m3"
+  reranker_top_n: 5  # Increased from 2 to get more context
+  # Ensemble weights favor semantic search for medical text
+  vectorstore_weight: 0.6
+  keyword_weight: 0.4
+
+# Evaluation settings - FIXED CONFIGURATION
+evaluation:
+  # CRITICAL: Ensure this matches your actual data column
+  target_variable: "Symptom Severity"  # Changed from "Pain Level (1-10)"
+  
+  # Valid values for Symptom Severity scale
+  # Based on analysis of your sample data
+  valid_values: ["0", "1", "1a", "1b", "2", "2a", "2b", "3", "3a", "3b", "3c", "4", "NR"]
+  
+  # Confidence threshold for hybrid extraction
+  confidence_threshold: 0.6
+
+# Continuation options
+continue_option: "next"
+run_benchmark: false  # Set true only for comprehensive evaluation
+
+# Placeholder image settings
+placeholder_image:
+  width: 400
+  height: 320
+
+# Advanced LLM settings
+advanced_llm:
+  keep_alive: 0
+  num_predict: 50  # Limit tokens for concise responses
+  mirostat_tau: null  # Disable for deterministic output
+
+# IMPROVED FEW-SHOT EXAMPLES
+few_shot_examples:
+  example1:
+    input: |
+      Clinical Report: Patient presents with mild symptoms. No complications noted. 
+      Follow-up scheduled in 2 weeks. Vital signs stable. Symptom Severity: 1.
+    output: '{"Symptom Severity": "1"}'
+  
+  example2:
+    input: |
+      Patient Report: Moderate symptoms requiring medication adjustment. Patient responding 
+      well to treatment. Symptom severity classified as 2a.
+    output: '{"Symptom Severity": "2a"}'
+  
+  example3:
+    input: |
+      Medical Notes: No significant symptoms reported. Patient appears stable and 
+      asymptomatic. All tests normal. Severity rating: 0.
+    output: '{"Symptom Severity": "0"}'
+  
+  example4:
+    input: |
+      Emergency Report: Severe condition requiring immediate hospitalization. Emergency 
+      intervention performed. Critical severity level 3.
+    output: '{"Symptom Severity": "3"}'
+  
+  example5:
+    input: |
+      Follow-up Visit: Patient shows mild improvement from previous visit. Continuing 
+      current treatment plan. Score updated to 1a.
+    output: '{"Symptom Severity": "1a"}'
+  
+  example6:
+    input: |
+      Clinical Assessment: No mention of symptom severity in this report. Patient 
+      discussed medication adherence only.
+    output: '{"Symptom Severity": "NR"}'
+
+# ENHANCED SYSTEM PROMPTS
+system_prompts:
+  simple: |
+    You are a medical data extraction specialist. Extract the {target_variable} from the medical report.
+    
+    Valid values: {valid_values}
+    
+    Rules:
+    1. Look for explicit severity scores or ratings
+    2. If score is stated directly (e.g., "Score: 2a"), extract it
+    3. If not explicitly stated, return "NR" (Not Recorded)
+    4. Response format: {{"<target_variable>": "<value>"}}
+    
+  complex: |
+    You are an expert AI assistant specialized in clinical data extraction with focus on {target_variable}.
+    
+    **Task**: Extract {target_variable} from the provided medical report with high precision.
+    
+    **Valid Values**: {valid_values}
+    - Numeric values (0-4) represent increasing severity
+    - Letter suffixes (a, b, c) represent sub-classifications
+    - "NR" means "Not Recorded" - use when information is absent or ambiguous
+    
+    **Extraction Guidelines**:
+    1. **Priority 1 - Structured Mentions**: Look for explicit statements:
+       - "Severity: 2a"
+       - "Score = 1b"  
+       - "{target_variable}: 3"
+    
+    2. **Priority 2 - Direct Statements**: Identify clear declarations:
+       - "Patient classified as severity 2"
+       - "Condition rated 1a"
+    
+    3. **Priority 3 - Only if explicitly stated**: Clinical descriptors with clear scores:
+       - Must be current state (not past conditions)
+       - Must not be negated
+    
+    4. **Use "NR" when**:
+       - No explicit severity score is mentioned
+       - Information is ambiguous or contradictory
+       - Only descriptive terms without scores are present
+    
+    **Critical**: 
+    - Be conservative - prefer "NR" over guessing
+    - Ignore past medical history unless explicitly current
+    - Handle negations correctly (e.g., "no severe symptoms" ≠ severity 3)
+    
+    **Output Format**: Valid JSON only
+    {{"<target_variable>": "<extracted_value>"}}
+
+# Metrics to calculate
+metrics:
+  - "accuracy"
+  - "precision"
+  - "recall"
+  - "f1_score"
+  - "cohen_kappa"  # Added for inter-rater reliability
+
+# Column naming
+column_name_format: "{target_variable}_pred_{model}_{rag}_{reranker}"

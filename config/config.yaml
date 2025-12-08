@@ -19,8 +19,8 @@ processing:
 # RAG settings
 rag:
   enabled: true
-  chunk_size: 70
-  chunk_overlap: 20
+  chunk_size: 400
+  chunk_overlap: 80
 
 # Model settings
 models:
@@ -30,20 +30,21 @@ models:
 
 # Prompt settings
 prompting:
-  simple_prompting: true
+  simple_prompting: false
   fewshots_method: true
-  fewshots_with_NR_method: false
+  fewshots_with_NR_method: true
   fewshots_with_NR_extended_method: false
 
 # Output settings
 output:
   json_format: true
+  column_name_style: "short"
 
 # Sampling parameters
 sampling:
-  temperatures: [0.1]
-  top_ks: [40]
-  top_ps: [0.9]
+  temperatures: [0.0]
+  top_ks: [10]
+  top_ps: [0.85]
 
 # Embedding models
 # Use a public, widely-available sentence-transformers model so embeddings can be created
@@ -54,17 +55,19 @@ embedding_models:
 # Retriever settings
 retriever:
   types:
-    - "vectorstore"
+    - "ensemble"
   use_reranker: true
   reranker_model_name: "BAAI/bge-reranker-v2-m3"
-  reranker_top_n: 2
+  reranker_top_n: 5
 
 # Evaluation settings
 evaluation:
   # Set the field name that contains the ground-truth labels in your input CSV.
-  # Change this to match your input file header (e.g. 'Symptom Severity').
+  # Changed to match actual data: 'Symptom Severity'
   target_variable: "Symptom Severity"
+  # Valid values for Symptom Severity scale
   valid_values: ["0", "1", "1a", "1b", "2", "2a", "2b", "3", "3a", "3b", "3c", "4", "NR"]
+  confidence_threshold: 0.6
 
 # Continuation options
 continue_option: "next"
@@ -73,23 +76,44 @@ continue_option: "next"
 placeholder_image:
   width: 400
   height: 320
-
 # Advanced LLM settings
 advanced_llm:
   keep_alive: 0
-  num_predict: null
+  num_predict: 50
   mirostat_tau: null
-
 # Few-shot examples and prompts
 few_shot_examples:
   example1:
-    input: "Sample input 1"
-    output: "Sample output 1"
-
+    input: "Clinical Report: Patient presents with mild symptoms. No complications. Severity: 1."
+    output: '{"Symptom Severity": "1"}'
+  example2:
+    input: "Patient Report: Moderate symptoms requiring adjustment. Score: 2a."
+    output: '{"Symptom Severity": "2a"}'
+  example3:
+    input: "Medical Notes: No significant symptoms. Patient asymptomatic. Severity: 0."
+    output: '{"Symptom Severity": "0"}'
+  example4:
+    input: "Emergency Report: Severe condition requiring hospitalization. Severity: 3."
+    output: '{"Symptom Severity": "3"}'
+  example5:
+    input: "Clinical Assessment: No mention of severity in this report."
+    output: '{"Symptom Severity": "NR"}'
 system_prompts:
-  simple: "Extract the {target_variable} from the given medical report. If not found, return 'NR'."
-  complex: "You are an AI assistant specialized in extracting {target_variable} from medical reports. Your task is to carefully analyze the given report and extract the {target_variable}. If the information is not present, return 'NR'. Ensure your response is accurate and concise."
-
+  simple: |
+    You are a medical data extraction specialist. Extract the {target_variable} from the medical report.
+    Valid values: {valid_values}
+    Rules: 1. Look for explicit severity scores. 2. If not found, return 'NR'. Response: {{"<target_variable>": "<value>"}}
+  complex: |
+    You are an expert AI assistant specialized in clinical data extraction with focus on {target_variable}.
+    Task: Extract {target_variable} from medical report with high precision.
+    Valid Values: {valid_values}
+    Guidelines:
+    1. Priority 1 - Structured Mentions: Look for "Severity: 2a" or "Score = 1b"
+    2. Priority 2 - Direct Statements: "Patient classified as severity 2"
+    3. Use "NR" when no explicit severity score is mentioned
+    Critical: Be conservative, prefer "NR" over guessing. Ignore past history unless explicitly current.
+    Critical: Be conservative, prefer "NR" over guessing. Ignore past history unless explicitly current.
+    Output: {{"<target_variable>": "<extracted_value>"}}
 # Metrics to calculate
 metrics:
   - "accuracy"
@@ -103,8 +127,6 @@ column_name_format: "{target_variable}_model_({model})_rag_enabled_({rag})_embed
 
 # Column name style controls how verbose the generated prediction column names are.
 # Options: 'verbose' (full details) or 'short' (compact, human-friendly).
-output:
-  column_name_style: "short"
 
 # Library versions
 library_versions:
